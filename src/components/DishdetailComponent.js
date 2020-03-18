@@ -5,45 +5,62 @@ import { render } from '@testing-library/react';
 class DishDetail extends Component {
     constructor(props) {
         super(props);
-
     }
-    renderComments = () => {
-        const comments = this.props.dish.comments.map((comm) => {
-            if (comm != null)
-                return (
-                    <div key={comm.id}>
-                        <p>
-                            <li>{comm.comment}</li></p>
-                        <p>
-                            <li>-{comm.author}{comm.date}</li></p>
-                    </div>
-                );
-        });
-        return comments;
+
+
+    renderDish(dish) {
+        return (
+            <div className="col-12 col-md-5 m-1">
+                <Card>
+                    <CardImg top src={dish.image} alt={dish.name} />
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            </div>
+        );
+    }
+
+    renderComments(comments) {
+        if (comments != null)
+            return (
+                <div className="col-12 col-md-5 m-1">
+                    <h4>Comments</h4>
+                    <ul className="list-unstyled">
+                        {comments.map((comment) => {
+                            return (
+                                <li key={comment.id}>
+                                    <p>{comment.comment}</p>
+                                    <p>-- {comment.author} , {new Intl.DateTimeFormat('en-US', {
+                                        year: 'numeric', month: 'short',
+                                        day: '2-digit'
+                                    }).format(new Date(Date.parse(comment.date)))}</p>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            );
+        else return (
+            <div></div>
+        );
     }
 
     render() {
-        return (
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    <Card>
-                        <CardImg top src={this.props.dish.image} alt={this.props.dish.name} />
-                        <CardBody>
-                            <CardTitle>{this.props.dish.name}</CardTitle>
-                            <CardText>{this.props.dish.description}</CardText>
-                        </CardBody>
-                    </Card>
+        if (this.props.dish != null)
+            return (
+                <div className="container">
+                    <div className="row">
+                        {this.renderDish(this.props.dish)}
+                        {this.renderComments(this.props.dish.comments)}
+                    </div>
                 </div>
-
-                <div className="col-12 col-md-5 m-1 float-right">
-                    <h4>Comments</h4>
-                    <ul className="list-unstyled">
-                        {this.renderComments()}
-                    </ul>
-                </div>
-
-            </div>
-        )
-    };
+            );
+        else return (
+            <div></div>
+        );
+    }
 }
+
 export default DishDetail;
