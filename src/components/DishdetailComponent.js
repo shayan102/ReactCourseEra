@@ -6,7 +6,6 @@ import {
 } from 'reactstrap';
 import { LocalForm, Errors, Control } from 'react-redux-form'
 import { Link } from 'react-router-dom';
-import { render } from '@testing-library/react';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';

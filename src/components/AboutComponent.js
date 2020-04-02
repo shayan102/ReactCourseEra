@@ -1,27 +1,43 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media, } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
-            <RenderLeader leader={leader} />
+            <RenderLeader leader={leader}
+            leadersLoading={this.props.leadersLoading}
+            errmess={this.props.errmess} />
         );
     });
 
     function RenderLeader({ leader }) {
         return (
-            <Media tag="li">
-                <Media left >
-                    <Media object src={leader.image} alt={leader.name} />
-                </Media>
-                <Media body className="ml-5">
-                    <Media heading>{leader.name}</Media>
-                    <p>{leader.designation}</p>
-                    <p>{leader.description}</p>
-                </Media>
-            </Media >
+
+            <FadeTransform
+                in
+                transformProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}>
+
+                <Stagger in>
+                    <Media tag="li">
+                        <Fade in>
+                            <Media left >
+                                <Media object src={baseUrl + leader.image} alt={leader.name} />
+                            </Media>
+                            <Media body className="ml-5">
+                                <Media heading>{leader.name}</Media>
+                                <p>{leader.designation}</p>
+                                <p>{leader.description}</p>
+                            </Media>
+                        </Fade>
+                    </Media >
+                </Stagger>
+            </FadeTransform>
         );
     }
 
@@ -79,11 +95,15 @@ function About(props) {
                 <div className="col-12">
                     <h2>Corporate Leadership</h2>
                 </div>
-                <div className="col-12">
-                    {leaders}
-                </div>
-            </div>
-        </div>
+                <Stagger in >
+                    <Fade in >
+                        <div className="col-12">
+                            {leaders}
+                        </div>
+                    </Fade>
+                </Stagger>
+            </div >
+        </div >
     );
 }
 
